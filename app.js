@@ -1,16 +1,15 @@
 
 var todos = Gun().get('todos');
-//let todoItems = [];
-
 
 // add new todo and render it 
+// todo is an object contain 3 attributes text, status and its id 
 function addTodo(text) {
   var todo = {
     text,
     checked: false,
     id: Date.now(),
   };
- //todoItems.push(todo);
+ 
     todos.set(todo);
     
   const list = document.querySelector('.js-todo-list');
@@ -23,11 +22,11 @@ function addTodo(text) {
       <button class="delete-todo js-delete-todo">
         <svg><use href="#delete-icon"></use></svg>
       </button>
-    </li>
-  `;
+    </li>`;
    list.insertAdjacentHTML(pos ,render);
-   console.log(todos.get(todo));
+   //console.log(todos.get(todo));
 }
+//add listener to form to add new notes
 const form = document.querySelector('.js-form');
 form.addEventListener('submit', event => {
   event.preventDefault();
@@ -40,14 +39,15 @@ form.addEventListener('submit', event => {
   }
 });
 
-// mark todo as done 
-
+//add listener to form to mark done or delete notes 
 const list = document.querySelector('.js-todo-list');
 list.addEventListener('click', event => {
+
   if (event.target.classList.contains('js-tick')) {
     const itemKey = event.target.parentElement.dataset.key;
     toggleDone(itemKey);
   }
+
   if (event.target.classList.contains('js-delete-todo')) {
     const itemKey = event.target.parentElement.dataset.key;
     deleteTodo(itemKey);
@@ -64,21 +64,8 @@ function toggleDone(key) {
        item.classList.remove('done');
     
   }
-  // const item = document.querySelector(`[data-key='${key}']`);
-  // todos.get(key).on(function(todo){
-  //   if(todo.checked=== true) {
-  //     console.log("f")
-  //     todo.get(key).put({checked: false});
-  //     item.classList.remove('done');
-  //   }
-  //   else{
-  //     console.log("t")
-  //      todo.get(key).put({checked: true});
-  //      item.classList.add('done');
-  //   }
-  // })
-
 }
+
 
 function deleteTodo(key) {
   todos.get(key).put(null);
@@ -86,3 +73,8 @@ function deleteTodo(key) {
   item.remove();
 
 }
+
+
+todos.map().on(function (todo, id) {
+  console.log(todos.get(id));
+})
